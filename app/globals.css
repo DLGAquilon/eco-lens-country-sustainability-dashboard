@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f0fdf4; 
+  --foreground: #022c22;
+
+  --nature-primary: #10b981; 
+  --nature-accent: #f59e0b;
+
+  --card-bg: rgba(255, 255, 255, 0.7);
+  --card-border: rgba(5, 150, 105, 0.1);
+}
+
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #022c22; 
+    --foreground: #ecfdf5;
+    
+    --nature-primary: #34d399;
+    --card-bg: rgba(6, 78, 59, 0.5);
+    --card-border: rgba(52, 211, 153, 0.2);
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-nature-500: var(--nature-primary);
+  --color-nature-accent: var(--nature-accent);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui;
+  --font-display: var(--font-outfit), sans-serif;
+
+  --shadow-eco: 0 10px 15px -3px rgba(16, 185, 129, 0.1), 0 4px 6px -4px rgba(16, 185, 129, 0.1);
+}
+
+@utility glass-card {
+  background-color: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--card-border);
+  border-radius: 1.25rem;
+  box-shadow: var(--shadow-eco);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-inter), sans-serif;
+  transition: background-color 0.3s ease;
+}
