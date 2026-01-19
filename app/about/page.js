@@ -1,24 +1,46 @@
-export default function AboutPage() {
-  return (
-    <div className="max-w-3xl mx-auto py-16 space-y-12">
-      <section className="text-center space-y-4">
-        <h1 className="text-5xl font-display font-black text-nature-950">Our Mission</h1>
-        <p className="text-xl text-slate-500 leading-relaxed">
-          EcoLens was built to democratize environmental data, turning complex API numbers into actionable insights.
-        </p>
-      </section>
+import PageTransition from "@/components/layout/PageTransitions";
 
-      <div className="grid gap-8">
-        <div className="glass-card p-8 space-y-4">
-          <h2 className="text-2xl font-bold text-nature-950 italic underline decoration-nature-500">The Eco-Score Formula</h2>
-          <p className="text-slate-600 leading-relaxed">
-            Our proprietary algorithm analyzes real-time Air Quality (AQI) from OpenWeather and cross-references it with national population density. 
+export default function About() {
+  return (
+    <PageTransition>
+      <div className="max-w-4xl mx-auto px-6 py-20 space-y-16">
+        <section className="text-center space-y-6">
+          <h1 className="text-5xl md:text-7xl font-display font-black text-nature-950 tracking-tight">
+            Engineering a{" "}
+            <span className="text-nature-500 italic">Greener</span> Future.
+          </h1>
+          <p className="text-xl text-slate-500 max-w-2xl mx-auto leading-relaxed">
+            EcoLens is an open-source initiative designed to transform raw
+            environmental data into human-readable sustainability metrics.
           </p>
-          <div className="bg-slate-900 text-emerald-400 p-4 rounded-xl font-mono text-sm">
-            Score = 100 - (AQI * 12) - (Population / 200M)
+        </section>
+
+        <div className="grid md:grid-cols-2 gap-8">
+          <div className="glass-card p-8 border-l-4 border-nature-500">
+            <h3 className="font-display text-xl font-bold text-nature-950 mb-4">
+              The Data Engine
+            </h3>
+            <p className="text-slate-600 text-sm leading-relaxed">
+              We aggregate data from the <strong>REST Countries API</strong> and
+              <strong> OpenWeather Air Quality</strong> index to provide a
+              holistic view of a nation's environmental footprint.
+            </p>
+          </div>
+
+          <div className="glass-card p-8 border-l-4 border-nature-accent">
+            <h3 className="font-display text-xl font-bold text-nature-950 mb-4">
+              The Eco-Score
+            </h3>
+            <p className="text-slate-600 text-sm leading-relaxed mb-4">
+              Our proprietary calculation scales air quality against population
+              density:
+            </p>
+            <code className="block bg-slate-900 text-nature-400 p-3 rounded-lg text-xs font-mono">
+              Score = 100 - (AQI × 12) - (Pop / 200M)
+            </code>
           </div>
         </div>
       </div>
-    </div>
+    </PageTransition>
   );
 }
