@@ -5,12 +5,15 @@ export default function Footer() {
         <div>
           <h3 className="font-display font-bold text-lg mb-4">EcoLens</h3>
           <p className="text-sm text-slate-500 leading-relaxed">
-            Empowering global citizens with real-time environmental data to foster a sustainable future.
+            Empowering global citizens with real-time environmental data to
+            foster a sustainable future.
           </p>
         </div>
-        
+
         <div>
-          <h4 className="font-bold text-sm uppercase tracking-widest mb-4">Data Sources</h4>
+          <h4 className="font-bold text-sm uppercase tracking-widest mb-4">
+            Data Sources
+          </h4>
           <ul className="text-sm space-y-2 text-slate-500">
             <li>REST Countries API</li>
             <li>OpenWeather Air Pollution</li>
@@ -18,10 +21,14 @@ export default function Footer() {
         </div>
 
         <div>
-          <h4 className="font-bold text-sm uppercase tracking-widest mb-4">Platform</h4>
+          <h4 className="font-bold text-sm uppercase tracking-widest mb-4">
+            Platform
+          </h4>
           <p className="text-xs text-slate-400">
-            Built with Next.js 15, Tailwind v4, and hosted on Vercel. 
-            <br />© {new Date().getFullYear()} EcoLens Initiative.
+            Built with Next.js 15, Tailwind v4, and hosted on Vercel.
+            <span suppressHydrationWarning>
+              © {new Date().getFullYear()} EcoLens Initiative.
+            </span>
           </p>
         </div>
       </div>
