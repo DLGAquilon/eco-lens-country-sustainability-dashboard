@@ -1,7 +1,9 @@
-import {Inter, Outfit} from "next/font/google";
+import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import ThemeToggle from "@/components/ui/ThemeToggle";
+import { ThemeProvider } from "@/context/ThemeContext";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -20,13 +22,19 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={`${inter.variable} ${outfit.variable} font-sans antialiased`}>
-        <Navbar />
-        <main className="pt-28 min-h-screen max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {children}
-        </main>
-        <Footer />
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={`${inter.variable} ${outfit.variable} font-sans antialiased bg-background text-foreground transition-colors duration-500`}
+      >
+        <ThemeProvider>
+          <Navbar />
+          {/* ThemeToggle is placed here so it stays fixed regardless of page content */}
+          <ThemeToggle />
+          <main className="pt-28 min-h-screen">
+            {children}
+          </main>
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 :root {
+  /* Default Theme (Light/Day) */
   --background: #f0fdf4; 
   --foreground: #022c22;
 
@@ -9,26 +10,57 @@
 
   --card-bg: rgba(255, 255, 255, 0.7);
   --card-border: rgba(5, 150, 105, 0.1);
+  --header-bg: #ffffff;
+}
+
+
+[data-theme='day'] {
+  --background: #f0fdf4;
+  --foreground: #0f172a;
+  --header-bg: #ffffff;
+  --card-bg: rgba(255, 255, 255, 0.7);
+  --card-border: rgba(5, 150, 105, 0.1);
+}
+
+[data-theme='night'] {
+  --background: #0a0f1e;
+  --foreground: #f1f5f9;
+  --header-bg: #0f172a;
+  --card-bg: rgba(15, 23, 42, 0.6);
+  --card-border: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme='dawn'] {
+  --background: linear-gradient(to bottom right, #f0f9f4, #ffe4e6, #ffedd5);
+  --foreground: #1e1b4b;
+  --header-bg: #f0f9f4;
+}
+
+[data-theme='dusk'] {
+  --background: linear-gradient(to bottom right, #4c1d95, #f97316, #fbbf24);
+  --foreground: #ffffff;
+  --header-bg: #4c1d95;
 }
 
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #022c22; 
-    --foreground: #ecfdf5;
-    
-    --nature-primary: #34d399;
-    --card-bg: rgba(6, 78, 59, 0.5);
-    --card-border: rgba(52, 211, 153, 0.2);
+  :root:not([data-theme]) {
+    --background: #f0fdf4; 
+    --foreground: #022c22;
+    --header-bg: #ffffff;
   }
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-surface: var(--header-bg);
 
   --color-nature-500: var(--nature-primary);
   --color-nature-accent: var(--nature-accent);
+
+  --color-card: var(--card-bg);
+  --color-border-eco: var(--card-border);
 
   --font-sans: var(--font-inter), ui-sans-serif, system-ui;
   --font-display: var(--font-outfit), sans-serif;
@@ -45,9 +77,17 @@
   box-shadow: var(--shadow-eco);
 }
 
+
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-inter), sans-serif;
-  transition: background-color 0.3s ease;
+  transition: background 0.8s ease-in-out, color 0.4s ease-in-out;
+  min-height: 100vh;
+  margin: 0;
+}
+
+
+header, footer {
+  background-color: var(--header-bg);
+  transition: background-color 0.4s ease, border-color 0.4s ease;
 }

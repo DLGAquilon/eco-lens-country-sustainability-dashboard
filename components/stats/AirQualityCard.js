@@ -2,12 +2,32 @@ import Badge from "../ui/Badge";
 
 export default function AirQualityCard({ aqi, city }) {
   const aqiConfig = {
-    1: { label: "Excellent", variant: "success", desc: "Air is clean and poses little risk." },
-    2: { label: "Fair", variant: "success", desc: "Air quality is acceptable for most." },
-    3: { label: "Moderate", variant: "warning", desc: "Sensitive groups should limit outdoor time." },
-    4: { label: "Poor", variant: "danger", desc: "Health effects may be felt by everyone." },
-    5: { label: "Very Poor", variant: "danger", desc: "Health alert: everyone may experience effects." }
-  };
+    1: { 
+      label: "Optimal", 
+      variant: "success", 
+      desc: "Atmospheric conditions are optimal; air quality presents minimal to no health risk to the general population." 
+    },
+    2: { 
+      label: "Satisfactory", 
+      variant: "success", 
+      desc: "Air quality is considered satisfactory; however, certain pollutants may pose a minor risk to highly sensitive individuals." 
+    },
+    3: { 
+      label: "Degraded", 
+      variant: "warning", 
+      desc: "Atmospheric degradation detected. Members of sensitive groups may experience minor health effects; outdoor exertion should be limited." 
+    },
+    4: { 
+      label: "Unhealthy", 
+      variant: "danger", 
+      desc: "Adverse air quality conditions. The general population is likely to experience physiological effects; prolonged outdoor exposure is discouraged." 
+    },
+    5: { 
+      label: "Critical", 
+      variant: "danger", 
+      desc: "Severe atmospheric contamination. Health alert level reached; emergency conditions may occur, affecting all individuals regardless of sensitivity." 
+    }
+};
 
   const status = aqiConfig[aqi] || aqiConfig[1];
 

@@ -1,84 +1,99 @@
+"use client";
+import { useState, useEffect } from "react";
 import { fetchEcoCountries } from "@/lib/api-client";
-import Badge from "@/components/ui/Badge";
-import PageTransition from "@/components/layout/PageTransitions";
+import { calculateEcoScore } from "@/lib/utils";
+import { motion } from "framer-motion";
 
-export default async function RankingsPage() {
-  const countries = await fetchEcoCountries();
+export default function RankingsPage() {
+  const [ranked, setRanked] = useState([]);
 
-  const ranked = countries
-    .map((c) => ({
-      ...c,
-      ecoScore: Math.round(95 - c.population / 50000000),
-    }))
-    .sort((a, b) => b.ecoScore - a.ecoScore);
+  useEffect(() => {
+    async function loadData() {
+      const countries = await fetchEcoCountries();
+      const processed = countries
+        .map(c => ({ ...c, score: calculateEcoScore(c) }))
+        .sort((a, b) => b.score - a.score);
+      setRanked(processed);
+    }
+    loadData();
+  }, []);
 
   return (
-    <PageTransition>
-      <div className="max-w-7xl mx-auto px-6 py-12 space-y-10">
-        <header>
-          <h1 className="text-4xl font-display font-black text-nature-950">
-            Sustainability Rankings
-          </h1>
-          <p className="text-slate-500 mt-2">
-            Nations ranked by our proprietary Eco-Lens metrics.
-          </p>
-        </header>
+    <div className="max-w-5xl mx-auto px-6 py-20 transition-colors duration-500">
+      {/* Header Section */}
+      <motion.div 
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        className="mb-12"
+      >
+        <h1 className="text-4xl font-black text-foreground tracking-tight">
+          Global Eco-Rankings
+        </h1>
+        <p className="text-foreground/60">
+          The world's top performing nations based on current environmental data.
+        </p>
+      </motion.div>
 
-        <div className="glass-card overflow-hidden border border-nature-500/10">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left">
-              <thead className="bg-slate-50/50 border-b border-slate-100">
-                <tr>
-                  <th className="p-5 text-[10px] font-black uppercase tracking-widest text-slate-400">
-                    Rank
-                  </th>
-                  <th className="p-5 text-[10px] font-black uppercase tracking-widest text-slate-400">
-                    Nation
-                  </th>
-                  <th className="p-5 text-[10px] font-black uppercase tracking-widest text-slate-400">
-                    Eco-Score
-                  </th>
-                  <th className="p-5 text-[10px] font-black uppercase tracking-widest text-slate-400">
-                    Status
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {ranked.slice(0, 50).map((country, i) => (
-                  <tr
-                    key={country.name}
-                    className="border-b border-slate-50 hover:bg-nature-50/30 transition-colors group"
-                  >
-                    <td className="p-5 font-display font-bold text-slate-300 group-hover:text-nature-500">
-                      #{i + 1}
-                    </td>
-                    <td className="p-5 flex items-center gap-3">
-                      <img
-                        src={country.flag}
-                        className="w-8 h-5 rounded-sm object-cover shadow-sm"
-                        alt=""
-                      />
-                      <span className="font-bold text-nature-950">
-                        {country.name}
-                      </span>
-                    </td>
-                    <td className="p-5 font-mono font-bold text-nature-600">
-                      {country.ecoScore}%
-                    </td>
-                    <td className="p-5">
-                      <Badge
-                        variant={country.ecoScore > 80 ? "success" : "warning"}
-                      >
-                        {country.ecoScore > 80 ? "Leader" : "Advancing"}
-                      </Badge>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </PageTransition>
+      {/* Table Container */}
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+        className="bg-card rounded-[2.5rem] border border-border-eco overflow-hidden shadow-sm backdrop-blur-md"
+      >
+        <table className="w-full text-left border-collapse">
+          <thead>
+            <tr className="bg-foreground/5 text-[10px] uppercase tracking-[0.2em] text-foreground/40 font-black">
+              <th className="px-8 py-5">Rank</th>
+              <th className="px-8 py-5">Country</th>
+              <th className="px-8 py-5">Region</th>
+              <th className="px-8 py-5 text-right">Eco-Score</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-border-eco">
+            {ranked.slice(0, 20).map((country, index) => (
+              <motion.tr 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: index * 0.05 }}
+                key={country.name} 
+                className="hover:bg-nature-500/5 transition-colors group"
+              >
+                {/* Rank Number */}
+                <td className="px-8 py-5 font-bold text-foreground/30">
+                  #{index + 1}
+                </td>
+
+                {/* Country Name and Flag */}
+                <td className="px-8 py-5">
+                  <div className="flex items-center gap-3">
+                    <img 
+                      src={country.flag} 
+                      alt="" 
+                      className="w-8 h-5 object-cover rounded shadow-sm border border-border-eco" 
+                    />
+                    <span className="font-bold text-foreground">
+                      {country.name}
+                    </span>
+                  </div>
+                </td>
+
+                {/* Region */}
+                <td className="px-8 py-5 text-foreground/60 text-sm">
+                  {country.region}
+                </td>
+
+                {/* Score Badge */}
+                <td className="px-8 py-5 text-right">
+                  <span className="px-3 py-1 bg-nature-500/10 text-nature-500 rounded-lg font-black text-sm">
+                    {Math.round(country.score)}
+                  </span>
+                </td>
+              </motion.tr>
+            ))}
+          </tbody>
+        </table>
+      </motion.div>
+    </div>
   );
 }
