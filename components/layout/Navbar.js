@@ -22,7 +22,10 @@ export default function Navbar() {
       setCurrentTheme(theme);
     });
 
-    observer.observe(document.body, { attributes: true, attributeFilter: ["data-theme"] });
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
 
     // Initial check
     setCurrentTheme(document.body.getAttribute("data-theme") || "day");
@@ -51,14 +54,15 @@ export default function Navbar() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-        
         {/* DYNAMIC LOGO SECTION */}
         <Link
           href="/"
           className="relative h-10 w-36 transition-all duration-300 scale-500 origin-center"
         >
           <Image
-            src={showDarkModeLogo ? "/logo/logo-dark.png" : "/logo/logo-light.png"}
+            src={
+              showDarkModeLogo ? "/logo/logo-dark.png" : "/logo/logo-light.png"
+            }
             alt="EcoLens Logo"
             fill
             className={`object-contain transition-opacity duration-500 ${
@@ -89,8 +93,13 @@ export default function Navbar() {
         {/* MOBILE TOGGLE */}
         <button
           onClick={() => setIsOpen(!isOpen)}
+          aria-label={isOpen ? "Close main menu" : "Open main menu"}
+          aria-expanded={isOpen}
+          aria-controls="mobile-menu"
           className={`lg:hidden p-2 rounded-lg backdrop-blur-md transition-colors ${
-            showDarkModeLogo ? "text-white bg-white/10" : "text-slate-900 bg-slate-900/10"
+            showDarkModeLogo
+              ? "text-white bg-white/10"
+              : "text-slate-900 bg-slate-900/10"
           }`}
         >
           {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -101,6 +110,7 @@ export default function Navbar() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
+            id="mobile-menu"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}

@@ -25,11 +25,12 @@ export default function LandingClient({ countries }) {
           {mounted && (
             <Image
               src="/images/hero-earth.avif"
-              alt="High-res Earth background"
+              alt="EcoLens Earth Hero"
               fill
-              priority
-              sizes="100vw"
+              priority // This tells Next.js to load it immediately
+              fetchPriority="high" // This satisfies the specific Lighthouse requirement
               className="object-cover scale-105 transition-opacity duration-700"
+              sizes="100vw"
             />
           )}
           {/* Overlay to ensure text readability */}
@@ -58,7 +59,9 @@ export default function LandingClient({ countries }) {
           {/* Changed text to white for contrast against the image backdrop */}
           <h1 className="text-6xl md:text-8xl font-display font-black text-white tracking-tight leading-[0.9] drop-shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
             The World’s{" "}
-            <span className="text-emerald-400 italic drop-shadow-[0_0_15px_rgba(52,211,153,0.4)]">Eco-Pulse.</span>
+            <span className="text-emerald-400 italic drop-shadow-[0_0_15px_rgba(52,211,153,0.4)]">
+              Eco-Pulse.
+            </span>
           </h1>
 
           <p className="text-xl md:text-2xl text-white/90 max-w-2xl mx-auto leading-relaxed font-medium drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">

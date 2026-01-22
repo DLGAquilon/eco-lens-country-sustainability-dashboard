@@ -14,7 +14,7 @@ export default function CountryList({ allCountries }) {
   const filtered = allCountries.filter(
     (c) =>
       c.name.toLowerCase().includes(query.toLowerCase()) ||
-      c.region.toLowerCase().includes(query.toLowerCase())
+      c.region.toLowerCase().includes(query.toLowerCase()),
   );
 
   // 2. Sorting logic
@@ -53,10 +53,16 @@ export default function CountryList({ allCountries }) {
         </div>
 
         <div className="flex items-center gap-3 w-full md:w-auto">
-          <span className="text-sm font-bold text-foreground uppercase tracking-tight whitespace-nowrap">
+
+          <label
+            htmlFor="sort-select"
+            className="text-sm font-bold text-foreground uppercase tracking-tight whitespace-nowrap cursor-pointer"
+          >
             Sort By:
-          </span>
+          </label>
+
           <select
+            id="sort-select"
             value={sortBy}
             onChange={handleSortChange}
             className="w-full md:w-48 p-2.5 bg-white border border-slate-200 rounded-xl text-sm font-medium text-slate-700 outline-none focus:ring-2 focus:ring-nature-500/20 focus:border-nature-500 transition-all cursor-pointer"
@@ -72,8 +78,8 @@ export default function CountryList({ allCountries }) {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         <AnimatePresence mode="popLayout">
           {displayList.map((country) => (
-            <motion.div 
-              key={country.name} 
+            <motion.div
+              key={country.name}
               layout
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -103,7 +109,9 @@ export default function CountryList({ allCountries }) {
       ) : (
         sorted.length > 0 && (
           <div className="text-center pt-12 pb-10">
-            <p className="text-slate-400 text-sm italic">You've reached the end of the world. 🌍</p>
+            <p className="text-slate-400 text-sm italic">
+              You've reached the end of the world. 🌍
+            </p>
           </div>
         )
       )}
