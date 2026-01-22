@@ -8,7 +8,7 @@ export default function Badge({ children, variant = "default" }) {
   };
 
   return (
-    <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border ${styles[variant]}`}>
+    <span className={`px-2 py-0.5 rounded-full text-[12px] font-bold uppercase tracking-wider border ${styles[variant]}`}>
       {children}
     </span>
   );

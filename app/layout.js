@@ -22,9 +22,9 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
       <body
-        className={`${inter.variable} ${outfit.variable} font-sans antialiased bg-background text-foreground transition-colors duration-500`}
+        className={`${inter.variable} ${outfit.variable} font-sans antialiased bg-background text-foreground suppressHydrationWarningtransition-colors duration-500`}
       >
         <ThemeProvider>
           <Navbar />

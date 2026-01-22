@@ -1,12 +1,15 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import LiveClock from "@/components/stats/LiveClock";
 import ScoreGauge from "@/components/stats/ScoreGauge";
 import AirQualityCard from "@/components/stats/AirQualityCard";
 import EcoMetric from "@/components/stats/EcoMetric";
 import { useTheme } from "@/context/ThemeContext";
+import RegionalMetricCard from "@/components/stats/RegionalMetricCard";
+import { fetchMajorCities } from "@/lib/api-client";
+import { MAJOR_HUBS } from "@/lib/regional-data";
 
 export default function CountryClientView({
   country,
@@ -14,17 +17,104 @@ export default function CountryClientView({
   weatherData,
   sustainabilityScore,
 }) {
-  // Use the global toggleTheme function to ensure 
-  // the clock updates the WHOLE app, not just this page.
   const { theme, toggleTheme } = useTheme();
+  const [provinces, setProvinces] = useState([]);
+  const [loadingRegions, setLoadingRegions] = useState(true);
+
+  useEffect(() => {
+    const getRegionalHubs = async () => {
+      if (!country?.name) return;
+      setLoadingRegions(true);
+      try {
+        const staticCities = MAJOR_HUBS[country.name];
+        if (staticCities && staticCities.length > 0) {
+          setProvinces(staticCities);
+        } else {
+          const code = country.cca2 || country.alpha2Code || "";
+          const apiCities = await fetchMajorCities(country.name, code);
+          setProvinces(apiCities);
+        }
+      } catch (error) {
+        console.error("Regional fetch failed:", error);
+      } finally {
+        setLoadingRegions(false);
+      }
+    };
+    getRegionalHubs();
+  }, [country.name, country.cca2]);
+
+  const getTemporalStyles = (weatherData) => {
+    if (!weatherData)
+      return {
+        bg: "bg-background",
+        card: "bg-card border-border-eco",
+        button: "bg-foreground text-background",
+        text: "text-foreground",
+      };
+
+    const utcTime =
+      new Date().getTime() + new Date().getTimezoneOffset() * 60000;
+    const localDate = new Date(utcTime + weatherData.timezone * 1000);
+    const hour = localDate.getHours();
+
+    // SUNRISE (5 AM - 8 AM)
+    if (hour >= 5 && hour < 9) {
+      return {
+        mode: "sunrise",
+        bg: "bg-gradient-to-br from-orange-200 via-rose-100 to-amber-50",
+        card: "bg-white/60 backdrop-blur-md border-orange-200/50 shadow-lg shadow-orange-100", // Soft peach cards
+        button: "bg-orange-600 text-white shadow-orange-200",
+        text: "text-orange-950",
+        accent: "border-orange-200",
+      };
+    }
+
+    // DAY (9 AM - 5 PM) -> Uses your :root (Light Mode) Variables
+    if (hour >= 9 && hour < 17) {
+      return {
+        mode: "day",
+        bg: "bg-[#f0fdf4]", // Your --background
+        card: "bg-white/70 backdrop-blur-md border-[rgba(5,150,105,0.1)]", // Your --card-bg/border
+        button: "bg-[#022c22] text-[#f0fdf4]", // Your --foreground / --background
+        text: "text-[#022c22]",
+        accent: "border-[rgba(5,150,105,0.1)]",
+      };
+    }
+
+    // SUNSET (5 PM - 8 PM)
+    if (hour >= 17 && hour < 20) {
+      return {
+        mode: "sunset",
+        bg: "bg-gradient-to-br from-indigo-600 via-purple-500 to-pink-400",
+        card: "bg-indigo-900/40 backdrop-blur-xl border-white/20 text-white",
+        button: "bg-pink-500 text-white shadow-pink-500/40",
+        text: "text-white",
+        accent: "border-pink-300/30",
+      };
+    }
+
+    // NIGHT (8 PM - 4 AM) -> Uses your [data-theme='night'] Variables
+    return {
+      mode: "night",
+      bg: "bg-[#0a0f1e]",
+      card: "bg-[#161d31]/60 backdrop-blur-2xl border-white/10 shadow-2xl",
+      button: "bg-[#f1f5f9] text-[#0a0f1e]",
+      text: "text-[#f1f5f9]",
+      accent: "border-white/10",
+    };
+  };
+
+  const styles = getTemporalStyles(weatherData);
 
   return (
-    <div className="min-h-screen transition-all duration-1000">
-      <div className="max-w-7xl mx-auto px-6 space-y-12 pb-20 pt-10">
-        {/* 1. Navigation - Updated to use theme variables */}
+    <div
+      className={`min-h-screen w-full relative overflow-hidden transition-all duration-1000 ${styles.bg} ${styles.text}`}
+    >
+      <div className="max-w-7xl mx-auto px-6 space-y-12 pb-20 pt-28">
+        {/* 1. Navigation */}
         <Link
           href="/"
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-foreground text-background hover:opacity-90 transition-all font-bold text-sm shadow-xl active:scale-95"
+          className={`inline-flex items-center gap-2 px-6 py-3 rounded-2xl transition-all font-bold text-sm shadow-xl active:scale-95 ${styles.button}`}
         >
           ← Return to Dashboard
         </Link>
@@ -35,37 +125,52 @@ export default function CountryClientView({
             <img
               src={country.flag}
               alt={`${country.name} Flag`}
-              className="w-48 h-32 md:w-64 md:h-44 object-cover rounded-[2.5rem] shadow-2xl ring-8 ring-white/10"
+              className={`w-48 h-32 md:w-64 md:h-44 object-cover rounded-[2.5rem] shadow-2xl ring-8 ${styles.mode === "night" ? "ring-white/5" : "ring-black/5"}`}
             />
             <div className="space-y-4">
-              <h1 className="text-6xl md:text-7xl font-black tracking-tighter text-foreground">
+              <h1 className="text-6xl md:text-7xl font-black tracking-tighter">
                 {country.name}
               </h1>
               {weatherData && (
                 <LiveClock
                   timezoneOffset={weatherData.timezone}
                   cityName={country.capital}
-                  // This ensures the clock updates the Global Theme Context
                   onThemeChange={(newTheme) => toggleTheme(newTheme)}
                 />
               )}
             </div>
           </div>
 
-          {/* Gauge Section */}
-          <div className="p-10 rounded-[3.5rem] bg-card backdrop-blur-xl shadow-2xl border border-border-eco">
-            <ScoreGauge score={Math.round(sustainabilityScore)} theme={theme} />
+          <div
+            className={`p-10 rounded-[3.5rem] shadow-2xl border transition-all duration-1000 ${styles.card}`}
+          >
+            <ScoreGauge
+              score={Math.round(sustainabilityScore)}
+              /* Pass the specific temporal mode instead of just 'dark'/'light' */
+              temporalMode={styles.mode}
+              theme={
+                styles.mode === "night" || styles.mode === "sunset"
+                  ? "dark"
+                  : "light"
+              }
+            />
           </div>
         </section>
 
-        {/* 3. Metrics Grid */}
+        {/* 3. Primary Capital Metrics Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           <div className="lg:col-span-2">
-            <div className="h-full p-2 rounded-[3rem] backdrop-blur-md">
+            <div
+              className={`h-full p-2 rounded-[3rem] transition-all duration-1000 ${styles.card}`}
+            >
               <AirQualityCard
                 aqi={airData?.main?.aqi}
-                city={country.capital}
-                theme={theme}
+                city={`${country.capital} (Capital)`}
+                theme={
+                  styles.mode === "night" || styles.mode === "sunset"
+                    ? "dark"
+                    : "light"
+                }
               />
             </div>
           </div>
@@ -73,42 +178,90 @@ export default function CountryClientView({
           <div className="lg:col-span-2 grid grid-cols-2 gap-4">
             {weatherData ? (
               <>
-                <div className="p-6 rounded-[2.5rem] bg-card border border-border-eco backdrop-blur-md shadow-md">
-                  <EcoMetric
-                    label="Temperature"
-                    value={`${Math.round(weatherData.main.temp)}°C`}
-                    icon="🌡️"
-                  />
-                </div>
-                <div className="p-6 rounded-[2.5rem] bg-card border border-border-eco backdrop-blur-md shadow-md">
-                  <EcoMetric
-                    label="Humidity"
-                    value={`${weatherData.main.humidity}%`}
-                    icon="💧"
-                  />
-                </div>
-                <div className="p-6 rounded-[2.5rem] bg-card border border-border-eco backdrop-blur-md shadow-md">
-                  <EcoMetric
-                    label="Wind Speed"
-                    value={`${weatherData.wind.speed} m/s`}
-                    icon="💨"
-                  />
-                </div>
-                <div className="p-6 rounded-[2.5rem] bg-card border border-border-eco backdrop-blur-md shadow-md">
-                  <EcoMetric
-                    label="Condition"
-                    value={weatherData.weather[0].main}
-                    icon="☁️"
-                  />
-                </div>
+                {[
+                  {
+                    label: "Temperature",
+                    value: `${Math.round(weatherData.main.temp)}°C`,
+                    icon: "🌡️",
+                  },
+                  {
+                    label: "Humidity",
+                    value: `${weatherData.main.humidity}%`,
+                    icon: "💧",
+                  },
+                  {
+                    label: "Wind Speed",
+                    value: `${weatherData.wind.speed} m/s`,
+                    icon: "💨",
+                  },
+                  {
+                    label: "Condition",
+                    value: weatherData.weather[0].main,
+                    icon: "☁️",
+                  },
+                ].map((metric, idx) => (
+                  <div
+                    key={idx}
+                    className={`p-6 rounded-[2.5rem] border shadow-md transition-all duration-1000 ${styles.card}`}
+                  >
+                    <EcoMetric
+                      label={metric.label}
+                      value={metric.value}
+                      icon={metric.icon}
+                      theme={
+                        styles.mode === "night" || styles.mode === "sunset"
+                          ? "dark"
+                          : "light"
+                      }
+                    />
+                  </div>
+                ))}
               </>
             ) : (
-              <div className="col-span-2 p-10 rounded-[2.5rem] bg-card border border-dashed border-border-eco flex items-center justify-center text-foreground opacity-50 italic">
+              <div
+                className={`col-span-2 p-10 rounded-[2.5rem] border border-dashed flex items-center justify-center opacity-50 italic ${styles.accent}`}
+              >
                 Weather systems offline
               </div>
             )}
           </div>
         </div>
+
+        {/* 4. Regional Breakdown Section */}
+        <section
+          className={`pt-12 space-y-8 border-t transition-all duration-1000 ${styles.accent}`}
+        >
+          <div className="space-y-2">
+            <h2 className="text-4xl font-black tracking-tight">
+              Regional Breakdown
+            </h2>
+            <p className="opacity-60 font-medium">
+              Live environmental data across major provinces and territories.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {!loadingRegions &&
+              provinces.map((city, idx) => (
+                <div
+                  key={`${city.lat}-${city.lon}`}
+                  className={`rounded-[3rem] transition-all duration-1000 ${styles.card} 
+          shadow-2xl hover:shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] 
+          ${styles.mode === "night" ? "shadow-black/40" : "shadow-nature-900/10"}
+        `}
+                >
+                  <RegionalMetricCard
+                    city={city}
+                    theme={
+                      styles.mode === "night" || styles.mode === "sunset"
+                        ? "dark"
+                        : "light"
+                    }
+                  />
+                </div>
+              ))}
+          </div>
+        </section>
       </div>
     </div>
   );
