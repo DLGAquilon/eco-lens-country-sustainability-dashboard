@@ -47,17 +47,19 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 w-full z-100 mb-5 pb-5 transition-all duration-300 font-roboto uppercase tracking-[0.2em] ${
+      className={`fixed top-0 w-full z-100 transition-all duration-300 font-roboto uppercase tracking-[0.2em] ${
         showDarkModeLogo
-          ? "bg-[#0f172a]/90 shadow-2xl py-4 backdrop-blur-md" // Dark background for dark logo
-          : "bg-transparent py-6"
+          ? "bg-[#0f172a]/90 shadow-2xl pt-4 pb-2 backdrop-blur-md" // Minimal padding when scrolled
+          : "bg-transparent pt-3 pb-0" // Shifts items up by removing bottom padding entirely
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-6 flex items-start justify-between">
+        {/* By changing 'items-center' to 'items-start', items align to the top of the padding */}
+
         {/* DYNAMIC LOGO SECTION */}
         <Link
           href="/"
-          className="relative h-10 w-36 transition-all duration-300 scale-500 origin-center"
+          className="relative h-10 w-36 transition-all duration-300 hover:scale-450 scale-400 origin-center mt-0"
         >
           <Image
             src={
@@ -65,9 +67,7 @@ export default function Navbar() {
             }
             alt="EcoLens Logo"
             fill
-            className={`object-contain transition-opacity duration-500 ${
-              // mix-blend-multiply erases white backgrounds from logo-light.png
-              // mix-blend-screen erases dark backgrounds from logo-dark.png
+            className={`object-contain transition-opacity duration-500  ${
               showDarkModeLogo ? "mix-blend-screen" : "mix-blend-multiply"
             }`}
             priority
@@ -75,12 +75,12 @@ export default function Navbar() {
         </Link>
 
         {/* DESKTOP LINKS */}
-        <div className="hidden lg:flex gap-10 items-center">
+        <div className="hidden lg:flex gap-10 items-center mt-2">
           {navLinks.map((link) => (
             <Link
               key={link.name}
               href={link.href}
-              className={`relative group text-sm font-roboto uppercase tracking-[0.2em] transition-all duration-300 ${
+              className={`relative group text-sm transition-all duration-300 ${
                 showDarkModeLogo ? "text-white" : "text-slate-900"
               } hover:text-emerald-400`}
             >

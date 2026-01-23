@@ -30,7 +30,7 @@ export default function RootLayout({ children }) {
           <Navbar />
           {/* ThemeToggle is placed here so it stays fixed regardless of page content */}
           <ThemeToggle />
-          <main className="pt-19 min-h-screen">
+          <main className="pt-15 min-h-screen">
             {children}
           </main>
           <Footer />
