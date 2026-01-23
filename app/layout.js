@@ -29,7 +29,7 @@ export default function RootLayout({ children }) {
         <ThemeProvider>
           <Navbar />
           <ThemeToggle />
-          <main className="pt-15 min-h-screen overflow-x-hidden">
+          <main className="pt-18 min-h-screen overflow-x-hidden">
             {children}
           </main>
           <Footer />
