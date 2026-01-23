@@ -27,9 +27,11 @@ import { useEffect, useState } from "react";
 
 export default function ThemeToggle() {
   const [theme, setTheme] = useState("day");
+  const [mounted, setMounted] = useState("false");
 
   // Load saved preference on mount
   useEffect(() => {
+    setMounted(true);
     const savedTheme = localStorage.getItem("user-theme") || "day";
     setTheme(savedTheme);
     document.body.setAttribute("data-theme", savedTheme);
@@ -42,12 +44,18 @@ export default function ThemeToggle() {
     localStorage.setItem("user-theme", newTheme);
   };
 
+  if (!mounted) {
+    return (
+      <div className="fixed bottom-8 right-8 p-4 rounded-full w-14 h-14 bg-foreground opacity-20" />
+    );
+  }
+
   return (
     <button
       onClick={toggleTheme}
       className="fixed bottom-8 right-8 p-4 rounded-full shadow-2xl transition-all duration-300 z-50 
-                 bg-[var(--foreground)] text-[var(--background)] hover:scale-110 active:scale-90 
-                 border border-[var(--card-border)] backdrop-blur-md"
+                 bg-foreground text-foreground hover:scale-110 active:scale-90 
+                 border border-border-eco backdrop-blur-md"
       aria-label="Toggle Theme"
     >
       {theme === "day" ? (
