@@ -1,5 +1,60 @@
 "use client";
 
+/**
+ * RegionalMetricCard Component
+ * 
+ * This component displays real-time environmental and weather data for a specific
+ * regional city or province. It is used in the "Regional Breakdown" section of the
+ * country detail page to show localized environmental conditions across major cities
+ * and jurisdictions within a country.
+ * 
+ * Props:
+ * @param {Object} city - City object containing:
+ *        - name: City name to display
+ *        - state: State/province name
+ *        - lat: Latitude coordinate for API queries
+ *        - lon: Longitude coordinate for API queries
+ * @param {String} theme - Visual theme ("dark" or "light") for text color adaptation
+ * 
+ * Data Fetching:
+ * - Fetches weather data from OpenWeather Current Weather API
+ * - Fetches air pollution data from OpenWeather Air Pollution API
+ * - Runs both API calls in parallel using Promise.all for efficiency
+ * - Extracts: temperature, weather condition, AQI, humidity
+ * - Includes error handling with console logging (silent failure)
+ * 
+ * Loading State:
+ * - Shows animated skeleton placeholder while data loads
+ * - Prevents layout shift with h-64 height constraint
+ * 
+ * Data Display:
+ * - City Header: City name (bold, large) and state/province (small uppercase)
+ * - 2x2 Grid of Metrics using EcoMetric component:
+ *   * Temperature: Current temp in Celsius (🌡️)
+ *   * AQI Index: Air Quality Index level (🍃)
+ *   * Humidity: Relative humidity percentage (💧)
+ *   * Sky: Weather condition description (☁️)
+ * - Air Quality Badge: Shows AQI level (1-5) with color coding
+ *   * Level 1-2 (Good): Green styling
+ *   * Level 3-5 (Poor): Orange styling
+ * 
+ * Theme Awareness:
+ * - Adapts text colors based on "dark" or "light" theme prop
+ * - Dark theme: White text with opacity
+ * - Light theme: Nature-950/slate colors
+ * - Border colors also adapt to theme
+ * 
+ * Usage Context:
+ * - Displayed in a 3-column responsive grid on country detail pages
+ * - Shows data for up to 20 major cities/provinces per country
+ * - Allows users to compare environmental conditions across regions
+ * - Provides localized insights into air quality and weather patterns
+ * 
+ * This card is essential for understanding geographic variation in environmental
+ * conditions within a country, helping users identify regions with better or worse
+ * air quality and weather conditions.
+ */
+
 import { useState, useEffect } from "react";
 import EcoMetric from "./EcoMetric";
 
@@ -46,9 +101,6 @@ export default function RegionalMetricCard({ city, theme }) {
   const isDark = theme === "dark";
 
   return (
-    /* FIXED: Removed ${styles.card} because styles is not defined here.
-       The background and padding are handled by the parent div in CountryClientView.
-    */
     <div className="p-8 space-y-6">
       <div>
         <h3

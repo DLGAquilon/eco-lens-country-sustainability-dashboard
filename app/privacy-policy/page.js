@@ -1,8 +1,33 @@
 "use client";
+
+/**
+ * PrivacyPolicy Component
+ * 
+ * This component renders the privacy policy page for the EcoLens sustainability dashboard.
+ * It informs users about how the platform collects, uses, and protects their information
+ * while maintaining transparency about data handling practices.
+ * 
+ * Key Sections:
+ * - Data Transparency: Explains that EcoLens is designed as an informational dashboard
+ *   with no mandatory user accounts or personal identification
+ * - Information We Collect: Details technical data (IP, browser type) and user preferences
+ *   (theme settings stored locally via LocalStorage)
+ * - Third-Party Data Partners: Lists OpenWeather API and REST Countries as data sources
+ *   and clarifies that user identifiers are not shared with partners
+ * - Cookies Policy: Confirms minimal cookie usage for functional purposes only,
+ *   with no tracking, advertising, or marketing cookies
+ * 
+ * The page uses Framer Motion for subtle entrance animations and responsive grid layouts
+ * for information cards. All information is displayed in a card-based design with nature-themed
+ * accent colors to match the EcoLens branding.
+ * 
+ * Last Updated: January 20XX
+ */
+
 import { motion } from "framer-motion";
 
 export default function PrivacyPolicy() {
-  const lastUpdated = "January 2024";
+  const lastUpdated = "January 20XX";
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-20 transition-colors duration-500">

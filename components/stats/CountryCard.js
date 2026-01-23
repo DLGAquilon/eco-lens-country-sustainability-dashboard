@@ -1,4 +1,50 @@
 "use client";
+
+/**
+ * CountryCard Component
+ * 
+ * This component renders an individual country card for display in the dashboard grid.
+ * Each card provides a quick overview of a country's key information and serves as
+ * a clickable entry point to view detailed sustainability analytics.
+ * 
+ * Card Layout:
+ * 1. Flag Section (top):
+ *    - Large country flag image as visual identifier
+ *    - Region badge in top-right corner (different colors for Europe vs others)
+ *    - Scales up on hover for visual feedback
+ * 
+ * 2. Content Section (below flag):
+ *    - Country Name: Bold title (truncated if too long)
+ *    - Capital City: With location emoji and fallback text
+ *    - Data Grid (2 columns):
+ *      * Population: Formatted number (e.g., 1,234,567)
+ *      * Eco-Risk: Status indicator (currently static "Low")
+ *    - View Analytics Button: Links to detailed country page
+ * 
+ * Props:
+ * @param {Object} country - Country data object containing name, flag, capital, region, population
+ * 
+ * Animations:
+ * - Framer Motion entrance: Fades in and scales from 95% on scroll into view
+ * - Hover effect: Card lifts up (-translate-y-2) with enhanced shadow
+ * - Flag zoom: Image scales 105% on hover
+ * - Smooth transitions: All animations use 500ms duration for consistency
+ * 
+ * Styling:
+ * - Glass-morphism card design with backdrop blur
+ * - Nature-themed color palette (emerald, nature-950)
+ * - Responsive grid layout
+ * - Border transitions on hover for visual emphasis
+ * 
+ * Navigation:
+ * - "View Analytics" button links to `/country/[country-name]` dynamic route
+ * - Country name is URL-encoded to handle special characters
+ * - Button spans full width for easy tapping on mobile
+ * 
+ * This card is the primary UI element for the countries list on the dashboard,
+ * enabling users to discover and navigate to individual country sustainability data.
+ */
+
 import { formatNumber } from "@/lib/utils";
 import Badge from "../ui/Badge";
 import Button from "../ui/Button";

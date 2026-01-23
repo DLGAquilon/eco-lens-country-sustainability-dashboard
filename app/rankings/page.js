@@ -1,4 +1,34 @@
 "use client";
+
+/**
+ * RankingsPage Component
+ * 
+ * This component displays a global leaderboard of countries ranked by their environmental
+ * sustainability performance. It provides users with a clear view of which nations are
+ * leading in ecological responsibility based on the EcoLens Eco-Score algorithm.
+ * 
+ * Functionality:
+ * - Fetches all countries from the REST Countries API via api-client
+ * - Calculates individual Eco-Scores for each country using the standard algorithm
+ * - Sorts countries in descending order by score (highest-performing first)
+ * - Displays the top 20 ranked countries in a responsive table format
+ * 
+ * Table Columns:
+ * - Rank: Sequential ranking number (1-20)
+ * - Country: Country name with flag image for visual identification
+ * - Region: Geographical region/continent for context
+ * - Eco-Score: Rounded sustainability score with nature-themed badge styling
+ * 
+ * Visual Features:
+ * - Staggered animations using Framer Motion for each row
+ * - Hover effects on table rows for better interactivity
+ * - Flag images for each country
+ * - Responsive card-based design with rounded corners and border styling
+ * 
+ * This page serves as a quick reference for understanding global environmental performance
+ * rankings and discovering which countries are setting the standard for sustainability.
+ */
+
 import { useState, useEffect } from "react";
 import { fetchEcoCountries } from "@/lib/api-client";
 import { calculateEcoScore } from "@/lib/utils";

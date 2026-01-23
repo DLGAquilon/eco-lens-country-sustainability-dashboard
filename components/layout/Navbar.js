@@ -1,4 +1,51 @@
 "use client";
+
+/**
+ * Navbar Component
+ * 
+ * This is the fixed navigation bar that appears at the top of every page.
+ * It provides primary navigation and adapts to scroll position and theme changes.
+ * 
+ * State Management:
+ * - isOpen: Controls mobile menu visibility
+ * - scrolled: Tracks if user has scrolled more than 20px down
+ * - currentTheme: Monitors real-time theme changes via MutationObserver
+ * 
+ * Theme & Scroll Detection:
+ * - Uses MutationObserver to detect data-theme attribute changes (day/night)
+ * - Listens to scroll events to trigger dark mode styling when scrolled
+ * - Logo switches between light and dark versions based on theme or scroll state
+ * - Background becomes semi-transparent with blur effect when scrolled
+ * 
+ * Navigation Links:
+ * - Dashboard: Links to home page (/)
+ * - Rankings: Links to global sustainability rankings (/rankings)
+ * - Our Mission: Links to about page with methodology (/about)
+ * 
+ * Desktop Navigation:
+ * - Three main links displayed horizontally
+ * - Hover effects with animated underline (scales in from left)
+ * - Text color adapts based on dark/light mode
+ * 
+ * Mobile Navigation:
+ * - Hamburger menu icon (Menu/X from lucide-react)
+ * - Animated dropdown menu using Framer Motion
+ * - Menu links stack vertically with full width styling
+ * - Closing menu resets isOpen state
+ * 
+ * Logo Behavior:
+ * - Always visible and clickable (links to home)
+ * - Uses blend modes for proper overlaying (mix-blend-screen for dark, multiply for light)
+ * - Scales on hover for interactive feedback
+ * - Switches images based on showDarkModeLogo condition
+ * 
+ * Visual Effects:
+ * - Fixed positioning with z-index 100
+ * - Smooth transitions between dark/light modes
+ * - Backdrop blur effect on scroll
+ * - Shadow depth when scrolled or menu is open
+ */
+
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
@@ -11,12 +58,9 @@ export default function Navbar() {
   const [currentTheme, setCurrentTheme] = useState("day");
 
   useEffect(() => {
-    // 1. Handle Scroll
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
 
-    // 2. Sync with your ThemeToggle.js
-    // We observe changes to the 'data-theme' attribute on the document body
     const observer = new MutationObserver(() => {
       const theme = document.body.getAttribute("data-theme") || "day";
       setCurrentTheme(theme);
@@ -27,7 +71,6 @@ export default function Navbar() {
       attributeFilter: ["data-theme"],
     });
 
-    // Initial check
     setCurrentTheme(document.body.getAttribute("data-theme") || "day");
 
     return () => {
@@ -42,40 +85,38 @@ export default function Navbar() {
     { name: "Our Mission", href: "/about" },
   ];
 
-  // LOGIC: Show dark mode logo (light colors) if theme is night OR scrolled OR menu open
   const showDarkModeLogo = currentTheme === "night" || scrolled || isOpen;
 
   return (
     <nav
-      className={`fixed top-0 w-full z-100 transition-all duration-300 font-roboto uppercase tracking-[0.2em] ${
+      className={`fixed top-0 w-full z-[100] transition-all duration-300 font-roboto uppercase tracking-[0.2em] ${
         showDarkModeLogo
-          ? "bg-[#0f172a]/90 shadow-2xl pt-4 pb-2 backdrop-blur-md" // Minimal padding when scrolled
-          : "bg-transparent pt-3 pb-0" // Shifts items up by removing bottom padding entirely
+          ? "bg-[#0f172a]/90 shadow-2xl py-3 backdrop-blur-md" 
+          : "bg-transparent py-5"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 flex items-start justify-between">
-        {/* By changing 'items-center' to 'items-start', items align to the top of the padding */}
-
-        {/* DYNAMIC LOGO SECTION */}
+      <div className="max-w-7xl mx-auto px-6 flex items-center justify-between relative">
+        
+        {/* LOGO SECTION */}
         <Link
           href="/"
-          className="relative h-10 w-36 transition-all duration-300 hover:scale-450 scale-400 origin-center mt-0"
+          className="relative z-[110] transition-transform duration-300 hover:scale-105"
         >
-          <Image
-            src={
-              showDarkModeLogo ? "/logo/logo-dark.png" : "/logo/logo-light.png"
-            }
-            alt="EcoLens Logo"
-            fill
-            className={`object-contain transition-opacity duration-500  ${
-              showDarkModeLogo ? "mix-blend-screen" : "mix-blend-multiply"
-            }`}
-            priority
-          />
+          <div className="relative w-24 h-20 md:w-44 md:h-36 -my-8 md:-my-12">
+            <Image
+              src={showDarkModeLogo ? "/logo/logo-dark.png" : "/logo/logo-light.png"}
+              alt="EcoLens Logo"
+              fill
+              className={`object-contain transition-opacity duration-500 ${
+                showDarkModeLogo ? "mix-blend-screen" : "mix-blend-multiply"
+              }`}
+              priority
+            />
+          </div>
         </Link>
 
         {/* DESKTOP LINKS */}
-        <div className="hidden lg:flex gap-10 items-center mt-2">
+        <div className="hidden lg:flex gap-10 items-center">
           {navLinks.map((link) => (
             <Link
               key={link.name}
@@ -93,16 +134,14 @@ export default function Navbar() {
         {/* MOBILE TOGGLE */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          aria-label={isOpen ? "Close main menu" : "Open main menu"}
-          aria-expanded={isOpen}
-          aria-controls="mobile-menu"
-          className={`lg:hidden p-2 rounded-lg backdrop-blur-md transition-colors ${
+          aria-label={isOpen ? "Close menu" : "Open menu"}
+          className={`lg:hidden p-2 rounded-xl transition-colors relative z-[110] ${
             showDarkModeLogo
               ? "text-white bg-white/10"
               : "text-slate-900 bg-slate-900/10"
           }`}
         >
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
+          {isOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
       </div>
 
@@ -110,11 +149,10 @@ export default function Navbar() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            id="mobile-menu"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden bg-slate-750/25 border-t border-white/5 overflow-hidden"
+            className="absolute top-full left-0 w-full bg-slate-950 shadow-2xl lg:hidden z-[100] border-t border-white/10"
           >
             <div className="flex flex-col p-8 gap-8">
               {navLinks.map((link) => (
@@ -122,7 +160,7 @@ export default function Navbar() {
                   key={link.name}
                   href={link.href}
                   onClick={() => setIsOpen(false)}
-                  className="text-lg text-white hover:text-emerald-400 transition-colors"
+                  className="text-xl text-white hover:text-emerald-400 transition-colors py-2 border-b border-white/5"
                 >
                   {link.name}
                 </Link>

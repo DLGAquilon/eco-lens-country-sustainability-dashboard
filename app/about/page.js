@@ -1,3 +1,20 @@
+/**
+ * AboutPage Component
+ * 
+ * This component renders the about page for the EcoLens sustainability dashboard.
+ * It provides users with information about the platform's mission, the Eco-Score
+ * algorithm methodology, data sources, and technical architecture. The page features
+ * animated sections using Framer Motion for a smooth user experience, explaining:
+ * 
+ * - The Vision: EcoLens's mission to visualize global sustainability
+ * - The Intelligence Engine: Details on the three-factor Eco-Score calculation
+ *   (Atmospheric Weight, Regional Policy Baseline, Demographic Stress)
+ * - Core Data Sources: Information about REST Countries and OpenWeather API integrations
+ * - Call to Action: A button to return users to the main dashboard
+ * 
+ * The page uses motion variants for staggered animations and responsive grid layouts.
+ */
+
 "use client";
 import { motion } from "framer-motion";
 
@@ -58,7 +75,7 @@ export default function AboutPage() {
             </ul>
           </div>
 
-          {/* Architecture Card - Uses nature-500 consistently */}
+          {/* Architecture Card */}
           <div className="flex-1 bg-foreground/5 p-1 rounded-[3rem] shadow-2xl border border-border-eco">
             <div className="bg-nature-500 p-10 rounded-[2.8rem] border border-white/5 space-y-6">
               <h3 className="text-white font-bold italic text-lg tracking-tight">Technical Architecture</h3>

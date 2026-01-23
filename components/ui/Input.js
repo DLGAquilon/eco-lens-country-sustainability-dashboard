@@ -1,3 +1,31 @@
+/**
+ * Input Component
+ *
+ * A styled input field component with nature-themed styling and focus effects.
+ * Used in CountryList.js for the search input.
+ * 
+ * Features:
+ * - Rounded corners (rounded-xl)
+ * - Glass-morphism styling with semi-transparent white background
+ * - Nature-500 border color with reduced opacity
+ * - Focus ring effect (2px emerald ring with offset)
+ * - Smooth transitions (200ms)
+ * - Disabled state styling (opacity reduction)
+ * - Accepts all standard HTML input props via spread operator
+ * 
+ * Usage:
+ * <Input placeholder="Search country or region..." value={query} onChange={handleChange} />
+ * 
+ * Styling Highlights:
+ * - Uses cn() utility to merge custom and default classes
+ * - Focus-visible ring: nature-500 color with 2px offset
+ * - Height: 10 (40px)
+ * - Padding: 4px horizontal, 8px vertical
+ * - File input styling: transparent border/background
+ * 
+ * Location: CountryList.js (search functionality on dashboard)
+ */
+
 import { cn } from "@/lib/utils";
 
 export default function Input({ className, ...props }) {

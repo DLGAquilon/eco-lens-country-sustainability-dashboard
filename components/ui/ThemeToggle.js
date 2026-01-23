@@ -1,5 +1,27 @@
 "use client";
 
+/**
+ * ThemeToggle Component
+ * 
+ * A floating button (bottom-right corner) that allows users to manually toggle
+ * between "day" and "night" themes throughout the application.
+ * 
+ * Features:
+ * - Fixed position button (z-index: 50) that stays visible while scrolling
+ * - Loads saved theme preference from localStorage on mount
+ * - Shows Moon icon in day mode, Sun icon in night mode
+ * - Updates document body data-theme attribute for CSS theming
+ * - Persists theme preference across page reloads
+ * - Hover scale animation (110%) and click feedback (90%)
+ * 
+ * Theme State:
+ * - "day": Light theme (foreground/background colors from CSS variables)
+ * - "night": Dark theme
+ * 
+ * Unlike LiveClock (which auto-detects time-of-day), this provides manual control
+ * for users who prefer a specific theme regardless of local time.
+ */
+
 import { Sun, Moon } from "lucide-react";
 import { useEffect, useState } from "react";
 

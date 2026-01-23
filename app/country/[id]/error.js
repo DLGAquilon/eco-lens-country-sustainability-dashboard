@@ -1,5 +1,12 @@
 'use client';
 
+/**
+ * A fallback error page if data connections are interrupted
+ * Or API couldn't connect to the server
+ *   
+ */ 
+
+
 export default function Error({ error, reset }) {
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-6 text-center">

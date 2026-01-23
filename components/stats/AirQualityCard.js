@@ -1,8 +1,47 @@
-// AirQualityCard.js
+
+/**
+ * AirQualityCard Component
+ * 
+ * This component displays the real-time Air Quality Index (AQI) for a specific city.
+ * It provides a visual and textual representation of atmospheric conditions and their
+ * health implications for the population.
+ * 
+ * AQI Levels (1-5):
+ * 1. Optimal (success - green): Minimal health risk
+ * 2. Satisfactory (success - green): Minor risk for sensitive groups only
+ * 3. Degraded (warning - amber): Outdoor exertion should be limited
+ * 4. Unhealthy (danger - red): General population experiences effects
+ * 5. Critical (danger - red): Emergency conditions affecting everyone
+ * 
+ * Props:
+ * @param {Number} aqi - Air Quality Index value (1-5) from OpenWeather API
+ * @param {String} city - City name to display (usually capital city)
+ * @param {String} theme - Visual theme ("dark" or "light") for text color adaptation
+ * 
+ * Visual Components:
+ * - Header: City name and real-time air quality label
+ * - Badge: Colored status label (Optimal, Satisfactory, Degraded, Unhealthy, Critical)
+ * - AQI Number: Large circular display showing the numeric AQI value with color coding
+ * - Description: Italicized explanation of what the AQI level means for health
+ * 
+ * Color Scheme:
+ * - Danger (4-5): Red with red-tinted background
+ * - Warning (3): Amber/orange with amber-tinted background
+ * - Success (1-2): Emerald/green with green-tinted background
+ * 
+ * Theme Awareness:
+ * - Text colors adapt based on "dark" or "light" theme prop
+ * - Dark theme: White text with opacity variations
+ * - Light theme: Nature-950/slate text colors
+ * - Uses smooth transitions when theme changes
+ * 
+ * This card is typically displayed in the country detail page's capital metrics section
+ * to help users understand atmospheric quality at a glance.
+ */
+
 import Badge from "../ui/Badge";
 
 export default function AirQualityCard({ aqi, city, theme }) {
-  // Added theme prop
   const aqiConfig = {
     1: {
       label: "Optimal",
@@ -36,7 +75,7 @@ export default function AirQualityCard({ aqi, city, theme }) {
   };
   const status = aqiConfig[aqi] || aqiConfig[1];
 
-  // Dynamic Text Colors based on the 'theme' prop sent by CountryClientView
+  // Dynamic Text Colors based on the theme sent by CountryClientView
   const mainTextColor = theme === "dark" ? "text-white" : "text-nature-950";
   const secondaryTextColor =
     theme === "dark" ? "text-white/60" : "text-slate-400";

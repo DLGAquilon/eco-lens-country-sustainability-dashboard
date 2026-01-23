@@ -1,4 +1,7 @@
-import Skeleton from "@/components/ui/Skeleton";
+/**
+ * Loading components if fetching of data becomes too long.
+ *
+ */
 
 export default function LoadingCountry() {
   return (

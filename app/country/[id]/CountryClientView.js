@@ -1,4 +1,34 @@
+
 "use client";
+
+/**
+ * CountryClientView Component
+ * 
+ * This is the main client-side component for displaying detailed country sustainability data.
+ * It serves as a dynamic single-country dashboard that provides comprehensive environmental
+ * and climatic information about a specific nation.
+ * 
+ * Key Features:
+ * - Dynamic Temporal Styling: The page background and component styles change based on the local
+ *   time of the capital city (sunrise, day, sunset, night modes) for an immersive experience
+ * - Eco-Score Gauge: Displays the country's sustainability score with visual feedback
+ * - Capital City Metrics: Shows real-time air quality, temperature, humidity, wind speed, and weather
+ * - Regional Breakdown: Fetches and displays environmental data for major cities and provinces
+ * - Regional Data Fallback: Uses pre-configured major hubs or API-fetched cities as fallback
+ * 
+ * Props:
+ * @param {Object} country - Country data including name, flag, capital, and location codes
+ * @param {Object} airData - Air quality index data from OpenWeather API
+ * @param {Object} weatherData - Weather data including temperature, timezone, humidity, wind speed
+ * @param {Number} sustainabilityScore - Calculated sustainability score (0-100)
+ * 
+ * State Management:
+ * - provinces: Array of regional cities for the regional breakdown section
+ * - loadingRegions: Loading state for regional data fetching
+ * 
+ * The component uses Framer Motion for animations and responsive grid layouts to adapt
+ * across mobile, tablet, and desktop viewports.
+ */
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -62,20 +92,20 @@ export default function CountryClientView({
       return {
         mode: "sunrise",
         bg: "bg-gradient-to-br from-orange-200 via-rose-100 to-amber-50",
-        card: "bg-white/60 backdrop-blur-md border-orange-200/50 shadow-lg shadow-orange-100", // Soft peach cards
+        card: "bg-white/60 backdrop-blur-md border-orange-200/50 shadow-lg shadow-orange-100",
         button: "bg-orange-600 text-white shadow-orange-200",
         text: "text-orange-950",
         accent: "border-orange-200",
       };
     }
 
-    // DAY (9 AM - 5 PM) -> Uses your :root (Light Mode) Variables
+    // DAY (9 AM - 5 PM)
     if (hour >= 9 && hour < 17) {
       return {
         mode: "day",
-        bg: "bg-[#f0fdf4]", // Your --background
-        card: "bg-white/70 backdrop-blur-md border-[rgba(5,150,105,0.1)]", // Your --card-bg/border
-        button: "bg-[#022c22] text-[#f0fdf4]", // Your --foreground / --background
+        bg: "bg-[#f0fdf4]", 
+        card: "bg-white/70 backdrop-blur-md border-[rgba(5,150,105,0.1)]",
+        button: "bg-[#022c22] text-[#f0fdf4]",
         text: "text-[#022c22]",
         accent: "border-[rgba(5,150,105,0.1)]",
       };
@@ -93,7 +123,7 @@ export default function CountryClientView({
       };
     }
 
-    // NIGHT (8 PM - 4 AM) -> Uses your [data-theme='night'] Variables
+    // NIGHT (8 PM - 4 AM)
     return {
       mode: "night",
       bg: "bg-[#0a0f1e]",

@@ -1,5 +1,41 @@
 "use client";
 
+/**
+ * CountryList Component
+ * 
+ * This component renders an interactive, searchable and sortable grid of countries
+ * for the main dashboard. It provides users with powerful filtering and discovery tools
+ * to explore the sustainability data of different nations.
+ * 
+ * Core Features:
+ * - Search Filtering: Users can search by country name or region in real-time
+ * - Multi-Sort Options: Sort by alphabetical name, population size, or eco-score ranking
+ * - Pagination: Displays 12 countries initially with a "Load More" button for progressive loading
+ * - Responsive Grid: Adapts from 1 column (mobile) to 4 columns (desktop)
+ * 
+ * State Management:
+ * - query: Tracks the user's search input
+ * - sortBy: Stores the current sort option (alphabetical, population, eco-score)
+ * - visibleCount: Controls how many countries are displayed (pagination)
+ * 
+ * Data Processing Pipeline:
+ * 1. Filtering: Matches countries/regions against the search query
+ * 2. Sorting: Orders filtered results by the selected criteria
+ * 3. Pagination: Slices the sorted array to show only visibleCount items
+ * 
+ * User Interactions:
+ * - Typing in the search resets visible count to 12
+ * - Changing sort option resets visible count to 12
+ * - "Load More" button increments visible count by 12
+ * 
+ * Visual Features:
+ * - Animated grid with Framer Motion entrance/exit effects
+ * - Empty state message when no matches found
+ * - End-of-list message when all countries are displayed
+ * - Responsive toolbar with search input and sort dropdown
+ * - CountryCard components for individual country displays
+ */
+
 import { useState } from "react";
 import CountryCard from "../stats/CountryCard";
 import Input from "../ui/Input";
@@ -25,23 +61,22 @@ export default function CountryList({ allCountries }) {
     return 0;
   });
 
-  // 3. Pagination logic (This is what displayList is for!)
+  // 3. Pagination logic 
   const displayList = sorted.slice(0, visibleCount);
 
-  // Reset pagination when searching or sorting
   const handleSearchChange = (e) => {
     setQuery(e.target.value);
-    setVisibleCount(12); // Reset to first page
+    setVisibleCount(12); 
   };
 
   const handleSortChange = (e) => {
     setSortBy(e.target.value);
-    setVisibleCount(12); // Reset to first page
+    setVisibleCount(12); 
   };
 
   return (
     <div className="space-y-8">
-      {/* --- TOOLBAR --- */}
+      {/* TOOLBAR */}
       <div className="flex flex-col md:flex-row justify-between items-center gap-4 bg-white/50 p-4 rounded-2xl border border-slate-100 shadow-sm">
         <div className="w-full max-w-md">
           <Input
@@ -74,7 +109,7 @@ export default function CountryList({ allCountries }) {
         </div>
       </div>
 
-      {/* --- GRID (Now using displayList) --- */}
+      {/* GRID */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         <AnimatePresence mode="popLayout">
           {displayList.map((country) => (
@@ -92,7 +127,7 @@ export default function CountryList({ allCountries }) {
         </AnimatePresence>
       </div>
 
-      {/* --- LOAD MORE SECTION --- */}
+      {/* LOAD MORE */}
       {visibleCount < sorted.length ? (
         <div className="flex flex-col items-center justify-center gap-4 pt-12 pb-10">
           <p className="text-sm text-slate-400 font-medium">
@@ -116,7 +151,7 @@ export default function CountryList({ allCountries }) {
         )
       )}
 
-      {/* --- EMPTY STATE --- */}
+      {/*  EMPTY STATE  */}
       {sorted.length === 0 && (
         <div className="text-center py-20 bg-white/50 rounded-3xl border-2 border-dashed border-slate-200">
           <p className="text-slate-400 font-medium font-display text-lg">
