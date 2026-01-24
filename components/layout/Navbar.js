@@ -90,7 +90,7 @@ export default function Navbar() {
       className={`fixed top-0 w-full z-[100] transition-all duration-300 font-roboto uppercase tracking-[0.2em] ${
         showDarkModeLogo
           ? "bg-[#0f172a]/90 shadow-2xl py-3 backdrop-blur-md"
-          : "bg-transparent py-5"
+          : "bg-transparent shadow-2xl py-3 backdrop-blur-md"
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between relative">
@@ -165,7 +165,7 @@ export default function Navbar() {
                   key={link.name}
                   href={link.href}
                   onClick={() => setIsOpen(false)}
-                  className={`text-xl font-bold transition-colors ${
+                  className={`text-xl transition-colors ${
                     currentTheme === "night"
                       ? "text-white hover:text-emerald-400"
                       : "text-slate-900 hover:text-emerald-600"
