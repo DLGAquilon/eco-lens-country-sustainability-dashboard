@@ -33,7 +33,6 @@ import { useEffect, useState } from "react";
  */
 export default function ThemeToggle() {
   const [theme, setTheme] = useState("day");
-  // FIX: Must be boolean false, not string "false"
   const [mounted, setMounted] = useState(false);
 
   // Load saved preference on mount
@@ -67,7 +66,6 @@ export default function ThemeToggle() {
                  border border-border-eco backdrop-blur-md flex items-center justify-center"
       aria-label="Toggle Theme"
     >
-      {/* key prop forces a fresh render of the icon to prevent vanishing during swaps */}
       {theme === "day" ? (
         <Moon key="moon" className="w-6 h-6 animate-in fade-in zoom-in duration-300" />
       ) : (

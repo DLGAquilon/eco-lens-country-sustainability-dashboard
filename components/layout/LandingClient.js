@@ -68,7 +68,6 @@ export default function LandingClient({ countries }) {
               sizes="100vw"
             />
           )}
-          {/* Explicitly use the 'background' variable to ensure the bottom of the hero matches the theme */}
           <div className="absolute inset-0 bg-linear-to-b from-black/50 via-transparent to-background z-1" />
         </div>
 

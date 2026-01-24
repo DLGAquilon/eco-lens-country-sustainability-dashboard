@@ -58,7 +58,6 @@ export default function Navbar() {
   const [currentTheme, setCurrentTheme] = useState("day");
 
   useEffect(() => {
-    // Select the correct target (documentElement matches your ThemeToggle)
     const targetNode = document.documentElement;
 
     const observer = new MutationObserver(() => {
@@ -71,7 +70,6 @@ export default function Navbar() {
       attributeFilter: ["data-theme"],
     });
 
-    // Set initial state correctly
     setCurrentTheme(targetNode.getAttribute("data-theme") || "day");
 
     return () => observer.disconnect();

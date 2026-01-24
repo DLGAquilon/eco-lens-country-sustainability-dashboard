@@ -1,7 +1,6 @@
 @import "tailwindcss";
 
 :root {
-  /* Default Theme (Light/Day) */
   --background: #f0fdf4; 
   --foreground: #022c22;
 

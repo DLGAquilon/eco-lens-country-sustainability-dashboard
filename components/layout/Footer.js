@@ -38,7 +38,6 @@ export default function Footer() {
   const [currentTheme, setCurrentTheme] = useState("day");
 
   useEffect(() => {
-    // Select the correct target (documentElement matches your ThemeToggle)
     const targetNode = document.documentElement;
 
     const observer = new MutationObserver(() => {
@@ -51,7 +50,6 @@ export default function Footer() {
       attributeFilter: ["data-theme"],
     });
 
-    // Set initial state correctly
     setCurrentTheme(targetNode.getAttribute("data-theme") || "day");
 
     return () => observer.disconnect();
