@@ -153,7 +153,11 @@ export default function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="absolute top-full left-0 w-full bg-slate-950 shadow-2xl lg:hidden z-[100] border-t border-white/10"
+            className={`absolute top-full left-0 w-full shadow-2xl lg:hidden z-[100] border-t transition-colors duration-500 ${
+              currentTheme === "night"
+                ? "bg-slate-950 border-white/10"
+                : "bg-white border-slate-200"
+            }`}
           >
             <div className="flex flex-col p-8 gap-8">
               {navLinks.map((link) => (
@@ -161,7 +165,11 @@ export default function Navbar() {
                   key={link.name}
                   href={link.href}
                   onClick={() => setIsOpen(false)}
-                  className="text-xl text-white hover:text-emerald-400 transition-colors py-2 border-b border-white/5"
+                  className={`text-xl font-bold transition-colors ${
+                    currentTheme === "night"
+                      ? "text-white hover:text-emerald-400"
+                      : "text-slate-900 hover:text-emerald-600"
+                  }`}
                 >
                   {link.name}
                 </Link>
