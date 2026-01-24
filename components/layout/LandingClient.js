@@ -2,10 +2,10 @@
 
 /**
  * LandingClient Component
- * 
+ *
  * This is the main client-side layout component for the homepage/landing page.
  * It orchestrates the complete user experience with a hero section and data explorer.
- * 
+ *
  * Component Structure:
  * 1. Hero Section:
  *    - Full-screen background image (hero-earth.avif) with gradient overlay
@@ -14,22 +14,22 @@
  *    - Large headline: "The World's Eco-Pulse"
  *    - Subheading explaining real-time environmental analytics
  *    - "Start Exploring" button that scrolls to the explorer section
- * 
+ *
  * 2. Global Analytics Section:
  *    - Contains the CountryList component for searching/filtering countries
  *    - Header with title and description
  *    - Smooth scroll target (id="explorer") for the CTA button
- * 
+ *
  * Key Features:
  * - Mounted state check: Prevents hydration mismatch by only rendering image after mount
  * - Framer Motion animations: Hero content fades in and slides up on page load
  * - Smooth scroll behavior: "Start Exploring" button smoothly scrolls to the countries list
  * - Responsive design: Adapts typography and spacing from mobile to desktop
  * - Visual effects: Glow overlays, gradient overlays, drop shadows for depth
- * 
+ *
  * Props:
  * @param {Array} countries - Array of country objects with sustainability data
- * 
+ *
  * This component bridges the server-rendered data from the home page with client-side
  * interactivity, providing an engaging entry point to the EcoLens dashboard.
  */
@@ -56,7 +56,7 @@ export default function LandingClient({ countries }) {
       {/* HERO SECTION */}
       <section className="relative min-h-[85vh] flex flex-col items-center justify-center text-center px-6 overflow-hidden">
         {/* BACKGROUND IMAGE */}
-        <div className="absolute inset-0 -z-10">
+        <div className="absolute inset-0 z-0">
           {mounted && (
             <Image
               src="/images/hero-earth.avif"
@@ -68,7 +68,8 @@ export default function LandingClient({ countries }) {
               sizes="100vw"
             />
           )}
-          <div className="absolute inset-0 bg-linear-to-b from-black/50 via-transparent to-[#f8fafc] -z-10" />
+          {/* Explicitly use the 'background' variable to ensure the bottom of the hero matches the theme */}
+          <div className="absolute inset-0 bg-linear-to-b from-black/50 via-transparent to-background z-1" />
         </div>
 
         {/* GLOW EFFECTS */}

@@ -2,29 +2,29 @@
 
 /**
  * Footer Component
- * 
+ *
  * This component renders the application footer, providing key information about EcoLens
  * and navigation links to important resources, data partners, and policies.
- * 
+ *
  * Theme Awareness:
  * - Uses MutationObserver to detect real-time changes to the document's data-theme attribute
  * - Applies different styles for "day" and "night" modes
  * - Switches between light and dark logo images based on current theme
  * - Uses blend modes (mix-blend-screen for dark, mix-blend-multiply for light) for logo integration
- * 
+ *
  * Layout Structure:
  * - Brand Column (2 columns on desktop): Displays EcoLens logo and mission statement
  * - Data Partners Column: Links to OpenWeather API, REST Countries, and World Air Quality Project
  * - System Links Column: Navigation to About/Score Methodology, Privacy Policy, and GitHub repo
  * - Bottom Bar: Copyright notice and "Built for the Planet" tagline
- * 
+ *
  * Key Features:
  * - Responsive grid that adapts from 1 column (mobile) to 4 columns (desktop)
  * - Dynamic year in copyright notice using currentYear state
  * - External links to data partners and GitHub open-source repository
  * - Hover effects on all links (color transitions to emerald-500)
  * - Theme-aware styling with conditional colors and borders
- * 
+ *
  * This footer serves as both informational and navigational, helping users discover
  * data sources, understand methodology, access privacy information, and find the open-source code.
  */
@@ -38,18 +38,21 @@ export default function Footer() {
   const [currentTheme, setCurrentTheme] = useState("day");
 
   useEffect(() => {
-    //Theme toggle
+    // Select the correct target (documentElement matches your ThemeToggle)
+    const targetNode = document.documentElement;
+
     const observer = new MutationObserver(() => {
-      const theme = document.body.getAttribute("data-theme") || "day";
+      const theme = targetNode.getAttribute("data-theme") || "day";
       setCurrentTheme(theme);
     });
 
-    observer.observe(document.body, {
+    observer.observe(targetNode, {
       attributes: true,
       attributeFilter: ["data-theme"],
     });
 
-    setCurrentTheme(document.body.getAttribute("data-theme") || "day");
+    // Set initial state correctly
+    setCurrentTheme(targetNode.getAttribute("data-theme") || "day");
 
     return () => observer.disconnect();
   }, []);
@@ -76,9 +79,7 @@ export default function Footer() {
                   alt="EcoLens Logo"
                   fill
                   className={`object-contain object-left -mt-10 -mx-2 transition-all duration-700 hover:scale-110 ${
-                    isNight
-                      ? "mix-blend-screen opacity-100"
-                      : "mix-blend-multiply opacity-100"
+                    isNight ? "mix-blend-screen" : "mix-blend-multiply"
                   }`}
                   priority
                 />

@@ -14,7 +14,7 @@
 }
 
 
-[data-theme='day'] {
+:root[data-theme='day'] {
   --background: #f0fdf4;
   --foreground: #0f172a;
   --header-bg: #ffffff;
@@ -22,7 +22,7 @@
   --card-border: rgba(5, 150, 105, 0.1);
 }
 
-[data-theme='night'] {
+:root[data-theme='night'] {
   --background: #0a0f1e;
   --foreground: #f1f5f9;
   --header-bg: #0f172a;
@@ -30,26 +30,20 @@
   --card-border: rgba(255, 255, 255, 0.1);
 }
 
-[data-theme='dawn'] {
-  --background: linear-gradient(to bottom right, #f0f9f4, #ffe4e6, #ffedd5);
+:root[data-theme='dawn'] {
+  --background: #fdf2f8;  
+  --bg-gradient: linear-gradient(to bottom right, #f0f9f4, #ffe4e6, #ffedd5);
   --foreground: #1e1b4b;
   --header-bg: #f0f9f4;
 }
 
-[data-theme='dusk'] {
-  --background: linear-gradient(to bottom right, #4c1d95, #f97316, #fbbf24);
+:root[data-theme='dusk'] {
+  --background: #2e1065;
+  --bg-gradient: linear-gradient(to bottom right, #4c1d95, #f97316, #fbbf24);
   --foreground: #ffffff;
   --header-bg: #4c1d95;
 }
 
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme]) {
-    --background: #f0fdf4; 
-    --foreground: #022c22;
-    --header-bg: #ffffff;
-  }
-}
 
 @theme inline {
   --color-background: var(--background);
@@ -78,9 +72,9 @@
 }
 
 body {
-  background: var(--background);
+  background: var(--bg-gradient, var(--background));
   color: var(--foreground);
-  transition: color 0.4s ease-in-out; 
+  transition: background 0.4s ease-in-out, color 0.4s ease-in-out; 
   min-height: 100vh;
   margin: 0;
   overflow-x: hidden;

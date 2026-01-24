@@ -165,7 +165,6 @@ export default function CountryClientView({
                 <LiveClock
                   timezoneOffset={weatherData.timezone}
                   cityName={country.capital}
-                  onThemeChange={(newTheme) => toggleTheme(newTheme)}
                 />
               )}
             </div>

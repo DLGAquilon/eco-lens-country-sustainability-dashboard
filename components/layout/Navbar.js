@@ -2,43 +2,43 @@
 
 /**
  * Navbar Component
- * 
+ *
  * This is the fixed navigation bar that appears at the top of every page.
  * It provides primary navigation and adapts to scroll position and theme changes.
- * 
+ *
  * State Management:
  * - isOpen: Controls mobile menu visibility
  * - scrolled: Tracks if user has scrolled more than 20px down
  * - currentTheme: Monitors real-time theme changes via MutationObserver
- * 
+ *
  * Theme & Scroll Detection:
  * - Uses MutationObserver to detect data-theme attribute changes (day/night)
  * - Listens to scroll events to trigger dark mode styling when scrolled
  * - Logo switches between light and dark versions based on theme or scroll state
  * - Background becomes semi-transparent with blur effect when scrolled
- * 
+ *
  * Navigation Links:
  * - Dashboard: Links to home page (/)
  * - Rankings: Links to global sustainability rankings (/rankings)
  * - Our Mission: Links to about page with methodology (/about)
- * 
+ *
  * Desktop Navigation:
  * - Three main links displayed horizontally
  * - Hover effects with animated underline (scales in from left)
  * - Text color adapts based on dark/light mode
- * 
+ *
  * Mobile Navigation:
  * - Hamburger menu icon (Menu/X from lucide-react)
  * - Animated dropdown menu using Framer Motion
  * - Menu links stack vertically with full width styling
  * - Closing menu resets isOpen state
- * 
+ *
  * Logo Behavior:
  * - Always visible and clickable (links to home)
  * - Uses blend modes for proper overlaying (mix-blend-screen for dark, multiply for light)
  * - Scales on hover for interactive feedback
  * - Switches images based on showDarkModeLogo condition
- * 
+ *
  * Visual Effects:
  * - Fixed positioning with z-index 100
  * - Smooth transitions between dark/light modes
@@ -58,45 +58,42 @@ export default function Navbar() {
   const [currentTheme, setCurrentTheme] = useState("day");
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll);
+    // Select the correct target (documentElement matches your ThemeToggle)
+    const targetNode = document.documentElement;
 
     const observer = new MutationObserver(() => {
-      const theme = document.body.getAttribute("data-theme") || "day";
+      const theme = targetNode.getAttribute("data-theme") || "day";
       setCurrentTheme(theme);
     });
 
-    observer.observe(document.body, {
+    observer.observe(targetNode, {
       attributes: true,
       attributeFilter: ["data-theme"],
     });
 
-    setCurrentTheme(document.body.getAttribute("data-theme") || "day");
+    // Set initial state correctly
+    setCurrentTheme(targetNode.getAttribute("data-theme") || "day");
 
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      observer.disconnect();
-    };
+    return () => observer.disconnect();
   }, []);
-
   const navLinks = [
     { name: "Dashboard", href: "/" },
     { name: "Rankings", href: "/rankings" },
     { name: "Our Mission", href: "/about" },
   ];
 
-  const showDarkModeLogo = currentTheme === "night" || scrolled || isOpen;
+  const isNight = currentTheme === "night";
+  const showDarkModeLogo = isNight || scrolled || isOpen;
 
   return (
     <nav
       className={`fixed top-0 w-full z-[100] transition-all duration-300 font-roboto uppercase tracking-[0.2em] ${
         showDarkModeLogo
-          ? "bg-[#0f172a]/90 shadow-2xl py-3 backdrop-blur-md" 
+          ? "bg-[#0f172a]/90 shadow-2xl py-3 backdrop-blur-md"
           : "bg-transparent py-5"
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between relative">
-        
         {/* LOGO SECTION */}
         <Link
           href="/"
@@ -104,7 +101,11 @@ export default function Navbar() {
         >
           <div className="relative w-24 h-20 md:w-44 md:h-36 -my-8 md:-my-12">
             <Image
-              src={showDarkModeLogo ? "/logo/logo-dark.png" : "/logo/logo-light.png"}
+              src={
+                showDarkModeLogo
+                  ? "/logo/logo-dark.png"
+                  : "/logo/logo-light.png"
+              }
               alt="EcoLens Logo"
               fill
               className={`object-contain transition-opacity duration-500 ${
