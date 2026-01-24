@@ -36,7 +36,7 @@ The frontend is built with **Next.js**, **Tailwind CSS**, and **Framer Motion**,
 EcoLens features an atmospheric UI engine that synchronizes the application's aesthetic with the local time of the selected country. This goes beyond a simple toggle, offering four distinct visual states based on the 24-hour clock.
 | Phase | Time Range | Experience Description | Key Color Palette |
 | :--- | :--- | :--- | :--- |
-| Sunrise | 05:00 – 08:59 | Soft morning glow with peach-tinted cards. | orange-200 → rose-100 |
+| Sunrise | 05:00 – 07:59 | Soft morning glow with peach-tinted cards. | orange-200 → rose-100 |
 | Day | 09:00 – 16:59 | High-clarity, crisp light mode for readability. | bg-[#f0fdf4] (Nature White) |
 | Sunset | 17:00 – 19:59 | Vibrant purple/pink gradients and deep blurs. | indigo-600 → pink-400 |
 | Night | 20:00 – 04:59 | Deep immersion mode with high-contrast text. | bg-[#0a0f1e] (Midnight Blue) |
